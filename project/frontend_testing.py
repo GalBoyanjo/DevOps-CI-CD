@@ -3,7 +3,7 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
-from project.db_connector import get_config
+from db_connector import get_config
 """
 Frontend testing using selenium
 1. Start a Selenium Webdriver session.

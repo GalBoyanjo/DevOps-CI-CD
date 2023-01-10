@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
-from project.db_connector import get_user, get_config, get_all_ids
+from db_connector import get_user, get_config, get_all_ids
 
 """
 Combined Testing - for Web interface, REST API and Database testing
