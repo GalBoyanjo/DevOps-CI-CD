@@ -111,7 +111,6 @@ def get_config():
     get_config[0] - API gateway URL
     get_config[1] - Browser to test on
     get_config[2] - UserName to be insert
-
     """
     # Establishing a connection to DB
     conn = get_connection()
