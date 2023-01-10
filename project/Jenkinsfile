@@ -35,7 +35,7 @@ pipeline {
                 }
             }
         }
-        stage('Run clean_environment') {
+        stage('Run clean_environment2') {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
@@ -46,7 +46,7 @@ pipeline {
                 }
             }
         }
-        stage('Run rest_app') {
+        stage('Run rest_app2') {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
@@ -57,7 +57,7 @@ pipeline {
                 }
             }
         }
-        stage('Run web_app') {
+        stage('Run web_app2') {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
