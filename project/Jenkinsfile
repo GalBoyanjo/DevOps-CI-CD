@@ -35,6 +35,39 @@ pipeline {
                 }
             }
         }
+        stage('Run clean_environment') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/clean_environment.py'
+                    } else {
+                        sh 'python project/clean_environment.py'
+                    }
+                }
+            }
+        }
+        stage('Run rest_app') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'start /min python project/rest_app.py'
+                    } else {
+                        sh 'nohup python project/rest_app.py &'
+                    }
+                }
+            }
+        }
+        stage('Run web_app') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'start /min python project/web_app.py'
+                    } else {
+                        sh 'nohup python project/web_app.py &'
+                    }
+                }
+            }
+        }
         stage('Run backend_testing') {
             steps {
                 script {
