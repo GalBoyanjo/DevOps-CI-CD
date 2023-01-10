@@ -1,14 +1,14 @@
 pipeline {
     agent any
     options {
-        buildDiscarder(logRotator(numToKeepStr: ‘20', daysToKeepStr: ‘10'))
+        buildDiscarder(logRotator(numToKeepStr: ‘20', daysToKeepStr: ‘5'))
     }
 
     stages {
         stage('checkout') {
             steps {
                 script {
-                    properties([pipelineTriggers([pollSCM('0,30 * * * *')])])
+                    properties([pipelineTriggers([pollSCM('* * * * *')])])
                 }
                 git 'https://github.com/GalBoyanjo/DevOpsExperts.git'
             }
@@ -39,9 +39,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/backend_testing.py'
+                        bat 'python project/backend_testing.py'
                     } else {
-                        sh 'nohup python project/backend_testing.py &'
+                        sh 'python project/backend_testing.py'
                     }
                 }
             }
@@ -50,9 +50,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/frontend_testing.py'
+                        bat 'python project/frontend_testing.py'
                     } else {
-                        sh 'nohup python project/frontend_testing.py &'
+                        sh 'python project/frontend_testing.py'
                     }
                 }
             }
@@ -61,9 +61,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/combined_testing.py'
+                        bat 'python project/combined_testing.py'
                     } else {
-                        sh 'nohup python project/combined_testing.py &'
+                        sh 'python project/combined_testing.py'
                     }
                 }
             }
@@ -72,9 +72,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/clean_environment.py'
+                        bat 'python project/clean_environment.py'
                     } else {
-                        sh 'nohup python project/clean_environment.py &'
+                        sh 'python project/clean_environment.py'
                     }
                 }
             }
