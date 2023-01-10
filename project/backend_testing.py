@@ -1,6 +1,6 @@
 import requests
 
-from project.db_connector import get_user, get_config, get_all_ids
+from db_connector import get_user, get_config, get_all_ids
 """
 Backend testing
 1. Post a new user data to the REST API using POST method.
