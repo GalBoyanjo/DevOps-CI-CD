@@ -23,7 +23,7 @@ app = Flask(__name__)
 # returns the content of any txt file and status code 200
 @app.route("/content")
 def read_file():
-    with open('C:/Users/GalBoyanjo/PycharmProjects/devOpsExperts/words.txt', 'r', encoding='utf-8') as my_file:
+    with open('/class_tests/words.txt', 'r', encoding='utf-8') as my_file:
         file_content = my_file.read()
     return file_content, 200  # status code
 
@@ -31,7 +31,7 @@ def read_file():
 # using default
 @app.route('/register')
 def write_hello():
-    with open('C:/Users/GalBoyanjo/PycharmProjects/devOpsExperts/words.txt', 'w', encoding='utf-8') as my_file:
+    with open('/class_tests/words.txt', 'w', encoding='utf-8') as my_file:
         my_file.write("""
                         <html>
                         <body>
