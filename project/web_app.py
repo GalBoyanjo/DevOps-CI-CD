@@ -19,6 +19,7 @@ def get_user_name(user_id):
 
 @app.route('/stop_server')
 def stop_server():
+    print('hello test gal')
     os.kill(os.getpid(), signal.CTRL_C_EVENT)
     return 'Server stopped'
 
