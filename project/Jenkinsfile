@@ -42,9 +42,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/backend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        bat 'python project/backend_testing.py $SERVICE_CREDS_ZCX $SERVICE_CREDS_CVB'
                     } else {
-                        sh 'python project/backend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        sh 'python project/backend_testing.py $SERVICE_CREDS_ZXC $SERVICE_CREDS_CVB'
                     }
                 }
             }
