@@ -3,8 +3,8 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '5'))
     }
-    withCredentials([usernamePassword(credentialsId: 'freedb', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-        stages {
+    stages {
+        withCredentials([usernamePassword(credentialsId: 'freedb', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             stage('checkout') {
                 steps {
                     script {
