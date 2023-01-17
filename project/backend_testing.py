@@ -16,7 +16,6 @@ PASSWORD = sys.argv[2]
 config = get_config(USERNAME, PASSWORD)
 user_id = 1
 user_name = config[2]
-print(USERNAME,PASSWORD)
 
 # check validation of user_id to insert
 ids = get_all_ids(USERNAME, PASSWORD)

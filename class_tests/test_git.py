@@ -1,6 +1,6 @@
 import sys
 
-USERNAME = sys.argv[1]
-PASSWORD = sys.argv[2]
+USERNAME = 1
+PASSWORD = 2
 
 print(USERNAME,PASSWORD)
