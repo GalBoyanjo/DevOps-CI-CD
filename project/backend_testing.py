@@ -1,7 +1,8 @@
+import sys
+
 import requests
 
 from db_connector import get_user, get_config, get_all_ids
-from rest_app import USERNAME, PASSWORD
 
 """
 Backend testing
@@ -9,6 +10,9 @@ Backend testing
 2. Submit a GET request to make sure status code is 200 and data equals to the posted data.
 3. Check posted data was stored inside DB (users table)
 """
+
+USERNAME = sys.argv[1]
+PASSWORD = sys.argv[2]
 config = get_config(USERNAME, PASSWORD)
 user_id = 1
 user_name = config[2]

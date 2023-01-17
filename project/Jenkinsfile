@@ -42,9 +42,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/backend_testing.py'
+                        bat 'python project/backend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     } else {
-                        sh 'python project/backend_testing.py'
+                        sh 'python project/backend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }
@@ -53,9 +53,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/frontend_testing.py'
+                        bat 'python project/frontend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     } else {
-                        sh 'python project/frontend_testing.py'
+                        sh 'python project/frontend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }
@@ -64,9 +64,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/combined_testing.py'
+                        bat 'python project/combined_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     } else {
-                        sh 'python project/combined_testing.py'
+                        sh 'python project/combined_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }

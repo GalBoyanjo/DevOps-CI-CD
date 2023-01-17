@@ -1,10 +1,11 @@
+import sys
+
 import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 from db_connector import get_user, get_config, get_all_ids
-from rest_app import USERNAME, PASSWORD
 
 """
 Combined Testing - for Web interface, REST API and Database testing
@@ -18,6 +19,8 @@ Combined Testing - for Web interface, REST API and Database testing
 Any failure will throw an exception using the following code: raise Exception("test failed")
 """
 
+USERNAME = sys.argv[1]
+PASSWORD = sys.argv[2]
 # User data variables
 config = get_config(USERNAME, PASSWORD)
 user_id = 1

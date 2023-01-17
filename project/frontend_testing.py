@@ -1,10 +1,11 @@
+import sys
+
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 from db_connector import get_config
-from web_app import USERNAME, PASSWORD
 
 """
 Frontend testing using selenium
@@ -13,6 +14,9 @@ Frontend testing using selenium
 3. Check that the user name element is showing (web element exists).
 4. Print user name (using locator)
 """
+USERNAME = sys.argv[1]
+PASSWORD = sys.argv[2]
+
 # Get browser type from DB
 config = get_config(USERNAME, PASSWORD)
 browser_type = config[1]
