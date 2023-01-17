@@ -4,10 +4,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '5'))
     }
     parameters {
-        choice(name: "TestParameters", choices: ["3", "2", "1"],
-        description: "1-frontend_testing
-        2-backend_testing
-        3-combined_testing")
+        choice(name: "TestParameters", choices: ["3", "2", "1"],description: "1-frontend_testing \n2-backend_testing \n3-combined_testing")
     }
     stages {
         stage('checkout') {
