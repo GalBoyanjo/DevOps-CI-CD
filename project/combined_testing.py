@@ -42,7 +42,7 @@ try:
     # Get user data from DB(using pymysql)
     if get_user(user_id) != user_name:
         raise Exception("test failed")
-except:
+except Exception:
     raise Exception("test failed")
 
 browser_type = config[1]
@@ -62,7 +62,7 @@ try:
     user_id_element = driver.find_element(By.ID, value='user')
     if user_id_element.text != user_name:
         raise Exception("test failed")
-except:
+except Exception:
     raise Exception("test failed")
 finally:
     driver.quit()
