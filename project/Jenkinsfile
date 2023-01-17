@@ -3,79 +3,80 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '5'))
     }
+    environment {
+                SERVICE_CREDS = credentials('freedb')
+    }
     stages {
-        withCredentials([usernamePassword(credentialsId: 'freedb', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-            stage('checkout') {
-                steps {
-                    script {
-                        properties([pipelineTriggers([pollSCM('* * * * *')])])
-                    }
-                    git 'https://github.com/GalBoyanjo/DevOpsExperts.git'
+        stage('checkout') {
+            steps {
+                script {
+                    properties([pipelineTriggers([pollSCM('* * * * *')])])
                 }
+                git 'https://github.com/GalBoyanjo/DevOpsExperts.git'
             }
-            stage('Run rest_app') {
-                steps {
-                    script {
-                        if (checkOs() == 'Windows') {
-                            bat 'start /min python project/rest_app.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
-                        } else {
-                            sh 'nohup python project/rest_app.py & $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
-                        }
+        }
+        stage('Run rest_app') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'start /min python project/rest_app.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                    } else {
+                        sh 'nohup python project/rest_app.py & $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }
-            stage('Run web_app') {
-                steps {
-                    script {
-                        if (checkOs() == 'Windows') {
-                            bat 'start /min python project/web_app.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
-                        } else {
-                            sh 'nohup python project/web_app.py & $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
-                        }
+        }
+        stage('Run web_app') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'start /min python project/web_app.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                    } else {
+                        sh 'nohup python project/web_app.py & $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }
-            stage('Run backend_testing') {
-                steps {
-                    script {
-                        if (checkOs() == 'Windows') {
-                            bat 'python project/backend_testing.py %USERNAME% %PASSWORD%'
-                        } else {
-                            sh 'python project/backend_testing.py %USERNAME% %PASSWORD%'
-                        }
+        }
+        stage('Run backend_testing') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                    } else {
+                        sh 'python project/backend_testing.py %USERNAME% %PASSWORD%'
                     }
                 }
             }
-            stage('Run frontend_testing') {
-                steps {
-                    script {
-                        if (checkOs() == 'Windows') {
-                            bat 'python project/frontend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
-                        } else {
-                            sh 'python project/frontend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
-                        }
+        }
+        stage('Run frontend_testing') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/frontend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                    } else {
+                        sh 'python project/frontend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }
-            stage('Run combined_testing') {
-                steps {
-                    script {
-                        if (checkOs() == 'Windows') {
-                            bat 'python project/combined_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
-                        } else {
-                            sh 'python project/combined_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
-                        }
+        }
+        stage('Run combined_testing') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/combined_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                    } else {
+                        sh 'python project/combined_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }
-            stage('Run clean_environment') {
-                steps {
-                    script {
-                        if (checkOs() == 'Windows') {
-                            bat 'python project/clean_environment.py'
-                        } else {
-                            sh 'python project/clean_environment.py'
-                        }
+        }
+        stage('Run clean_environment') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/clean_environment.py'
+                    } else {
+                        sh 'python project/clean_environment.py'
                     }
                 }
             }
