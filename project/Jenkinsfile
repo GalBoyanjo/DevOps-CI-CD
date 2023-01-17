@@ -42,15 +42,15 @@ pipeline {
             }
         }
         stage('Run backend_testing') {
-            environment {
-                SERVICE_CREDS = credentials('freedb')
-            }
             steps {
-                script {
-                    if (checkOs() == 'Windows') {
-                        bat 'python project/backend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
-                    } else {
-                        sh 'python project/backend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                withCredentials([usernamePassword(credentialsId: 'freedb', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                // the code here can access $pass and $user
+                    script {
+                        if (checkOs() == 'Windows') {
+                            bat 'python project/backend_testing.py $USERNAME $PASSWORD'
+                        } else {
+                            sh 'python project/backend_testing.py $USERNAME $PASSWORD'
+                        }
                     }
                 }
             }
