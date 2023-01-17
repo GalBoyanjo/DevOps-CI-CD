@@ -1,0 +1,123 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '5'))
+    }
+    parameters {
+        choice(name: "TestParameters", choices: ["3", "2", "1"],
+        description: "1-frontend_testing
+        2-backend_testing
+        3-combined_testing")
+    }
+    stages {
+        stage('checkout') {
+            steps {
+                git 'https://github.com/GalBoyanjo/DevOpsExperts.git'
+            }
+        }
+        stage('Run rest_app') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'start /min python project/rest_app.py'
+                    } else {
+                        sh 'nohup python project/rest_app.py &'
+                    }
+                }
+            }
+        }
+        stage('Run web_app') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'start /min python project/web_app.py'
+                    } else {
+                        sh 'nohup python project/web_app.py &'
+                    }
+                }
+            }
+        }
+        stage('Run backend_testing') {
+            when {
+                expression {
+                    params.ENVIRONMENT == '2'
+                }
+            }
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/backend_testing.py'
+                    } else {
+                        sh 'python project/backend_testing.py'
+                    }
+                }
+            }
+        }
+        stage('Run frontend_testing') {
+            when {
+                expression {
+                    params.ENVIRONMENT == '1'
+                }
+            }
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/frontend_testing.py'
+                    } else {
+                        sh 'python project/frontend_testing.py'
+                    }
+                }
+            }
+        }
+        stage('Run combined_testing') {
+            when {
+                expression {
+                    params.ENVIRONMENT == '3'
+                }
+            }
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/combined_testing.py'
+                    } else {
+                        sh 'python project/combined_testing.py'
+                    }
+                }
+            }
+        }
+        stage('Run clean_environment') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/clean_environment.py'
+                    } else {
+                        sh 'python project/clean_environment.py'
+                    }
+                }
+            }
+        }
+    }
+    post{
+        failure {
+            emailext to: "gal.boyanjo@qmarkets.net",
+            subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
+            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}",
+            attachLog: true
+        }
+    }
+}
+
+def checkOs(){
+    if (isUnix()) {
+        def uname = sh script: 'uname', returnStdout: true
+        if (uname.startsWith("Darwin")) {
+            return "Macos"
+        }
+        else {
+            return "Linux"
+        }
+    }
+    else {
+        return "Windows"
+    }
+}
