@@ -19,9 +19,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/rest_app.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        bat 'start /min python project/rest_app.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     } else {
-                        sh 'nohup python project/rest_app.py & $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        sh 'nohup python project/rest_app.py & %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     }
                 }
             }
@@ -30,9 +30,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/web_app.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        bat 'start /min python project/web_app.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     } else {
-                        sh 'nohup python project/web_app.py & $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        sh 'nohup python project/web_app.py & %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     }
                 }
             }
@@ -43,7 +43,7 @@ pipeline {
                     if (checkOs() == 'Windows') {
                         bat 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     } else {
-                        sh 'python project/backend_testing.py %USERNAME% %PASSWORD%'
+                        sh 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     }
                 }
             }
@@ -52,9 +52,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/frontend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        bat 'python project/frontend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     } else {
-                        sh 'python project/frontend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        sh 'python project/frontend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     }
                 }
             }
@@ -63,9 +63,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/combined_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        bat 'python project/combined_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     } else {
-                        sh 'python project/combined_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
+                        sh 'python project/combined_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
                     }
                 }
             }
