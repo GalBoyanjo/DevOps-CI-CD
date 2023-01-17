@@ -3,9 +3,6 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '5'))
     }
-    environment {
-        SERVICE_CREDS = credentials('freedb')
-    }
 
     stages {
         stage('checkout') {
@@ -17,6 +14,9 @@ pipeline {
             }
         }
         stage('Run rest_app') {
+            environment {
+                SERVICE_CREDS = credentials('freedb')
+            }
             steps {
                 script {
                     if (checkOs() == 'Windows') {
@@ -28,6 +28,9 @@ pipeline {
             }
         }
         stage('Run web_app') {
+            environment {
+                SERVICE_CREDS = credentials('freedb')
+            }
             steps {
                 script {
                     if (checkOs() == 'Windows') {
@@ -39,12 +42,15 @@ pipeline {
             }
         }
         stage('Run backend_testing') {
+            environment {
+                SERVICE_CREDS = credentials('freedb')
+            }
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/backend_testing.py $SERVICE_CREDS_ZCX $SERVICE_CREDS_CVB'
+                        bat 'python project/backend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     } else {
-                        sh 'python project/backend_testing.py $SERVICE_CREDS_ZXC $SERVICE_CREDS_CVB'
+                        sh 'python project/backend_testing.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }
