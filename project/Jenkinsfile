@@ -47,9 +47,9 @@ pipeline {
                 // the code here can access $pass and $user
                     script {
                         if (checkOs() == 'Windows') {
-                            bat 'python project/backend_testing.py $USERNAME $PASSWORD'
+                            bat 'python project/backend_testing.py "$USERNAME" "$PASSWORD"'
                         } else {
-                            sh 'python project/backend_testing.py $USERNAME $PASSWORD'
+                            sh 'python project/backend_testing.py "$USERNAME" "$PASSWORD"'
                         }
                     }
                 }
