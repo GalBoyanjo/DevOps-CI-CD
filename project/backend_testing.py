@@ -1,7 +1,7 @@
 import requests
 
 from db_connector import get_user, get_config, get_all_ids
-from project.rest_app import USERNAME, PASSWORD
+from rest_app import USERNAME, PASSWORD
 
 """
 Backend testing

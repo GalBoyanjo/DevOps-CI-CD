@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 from db_connector import get_config
-from project.web_app import USERNAME, PASSWORD
+from web_app import USERNAME, PASSWORD
 
 """
 Frontend testing using selenium

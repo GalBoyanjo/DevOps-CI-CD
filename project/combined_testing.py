@@ -4,8 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 from db_connector import get_user, get_config, get_all_ids
-from project.rest_app import USERNAME
-from project.web_app import PASSWORD
+from rest_app import USERNAME, PASSWORD
 
 """
 Combined Testing - for Web interface, REST API and Database testing

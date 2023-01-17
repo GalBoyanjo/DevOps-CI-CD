@@ -18,6 +18,8 @@ def get_connection(db_user, db_pass):
 def add_user(db_user, db_pass, user_id, user_name):
     """
     Insert user to DB
+    :param db_user: DB username credential
+    :param db_pass: DB password credential
     :param user_id: ID of a user to insert
     :param user_name: UserName of a user to insert
     """
@@ -40,6 +42,8 @@ def add_user(db_user, db_pass, user_id, user_name):
 def get_user(db_user, db_pass, user_id):
     """
     Get UserName from DB
+    :param db_user: DB username credential
+    :param db_pass: DB password credential
     :param user_id: ID of a user to get data from
     :return: UserName
     """
@@ -65,6 +69,8 @@ def get_user(db_user, db_pass, user_id):
 def update_user(db_user, db_pass, user_id, user_name):
     """
     Update UserName on DB
+    :param db_user: DB username credential
+    :param db_pass: DB password credential
     :param user_id: Id of the user that will updated
     :param user_name: UserName Data to update
     """
@@ -85,6 +91,8 @@ def update_user(db_user, db_pass, user_id, user_name):
 def delete_user(db_user, db_pass, user_id):
     """
     Delete user from DB
+    :param db_user: DB username credential
+    :param db_pass: DB password credential
     :param user_id: Id of a user that will be deleted
     """
     # Establishing a connection to DB
