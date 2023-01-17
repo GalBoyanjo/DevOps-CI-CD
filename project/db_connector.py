@@ -1,28 +1,28 @@
 import pymysql
-from pypika import MySQLQuery as Query, Table, Schema, Field, Parameter, functions
+from pypika import MySQLQuery as Query, Table, Parameter, functions
 
 config_table = Table('config')
 users_table = Table('users')
 
 
-def get_connection():
+def get_connection(db_user, db_pass):
     """
     Establishing a connection to DB
     :return: connection variable
     """
-    conn = pymysql.connect(host='sql.freedb.tech', port=3306, user='freedb_devops', passwd='NH4CE5!WV3ckCWJ',
+    conn = pymysql.connect(host='sql.freedb.tech', port=3306, user=db_user, passwd=db_pass,
                            db='freedb_DevOpsPRJ')
     return conn
 
 
-def add_user(user_id, user_name):
+def add_user(db_user, db_pass, user_id, user_name):
     """
     Insert user to DB
     :param user_id: ID of a user to insert
     :param user_name: UserName of a user to insert
     """
     # Establishing a connection to DB
-    conn = get_connection()
+    conn = get_connection(db_user, db_pass)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -37,14 +37,14 @@ def add_user(user_id, user_name):
     conn.close()
 
 
-def get_user(user_id):
+def get_user(db_user, db_pass, user_id):
     """
     Get UserName from DB
     :param user_id: ID of a user to get data from
     :return: UserName
     """
     # Establishing a connection to DB
-    conn = get_connection()
+    conn = get_connection(db_user, db_pass)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -62,14 +62,14 @@ def get_user(user_id):
         return user_name[0]
 
 
-def update_user(user_id, user_name):
+def update_user(db_user, db_pass, user_id, user_name):
     """
     Update UserName on DB
     :param user_id: Id of the user that will updated
     :param user_name: UserName Data to update
     """
     # Establishing a connection to DB
-    conn = get_connection()
+    conn = get_connection(db_user, db_pass)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -82,13 +82,13 @@ def update_user(user_id, user_name):
     conn.close()
 
 
-def delete_user(user_id):
+def delete_user(db_user, db_pass, user_id):
     """
     Delete user from DB
     :param user_id: Id of a user that will be deleted
     """
     # Establishing a connection to DB
-    conn = get_connection()
+    conn = get_connection(db_user, db_pass)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -101,7 +101,7 @@ def delete_user(user_id):
     conn.close()
 
 
-def get_config():
+def get_config(db_user, db_pass):
     """
     Configuration Data saved on DB
     1. Gateway URL
@@ -113,7 +113,7 @@ def get_config():
     get_config[2] - UserName to be insert
     """
     # Establishing a connection to DB
-    conn = get_connection()
+    conn = get_connection(db_user, db_pass)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -128,13 +128,13 @@ def get_config():
     return config_data
 
 
-def get_all_ids():
+def get_all_ids(db_user, db_pass):
     """
     Get all Users Id's from DB
     :return: List of all id's from DB
     """
     # Establishing a connection to DB
-    conn = get_connection()
+    conn = get_connection(db_user, db_pass)
     conn.autocommit(True)
 
     # Getting a cursor from Database

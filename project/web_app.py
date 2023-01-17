@@ -1,3 +1,5 @@
+import sys
+
 from flask import Flask
 
 from db_connector import get_user
@@ -5,12 +7,15 @@ from db_connector import get_user
 import os
 import signal
 
+USERNAME = sys.argv[1]
+PASSWORD = sys.argv[2]
+
 app = Flask(__name__)
 
 
 @app.route("/users/get_user_name/<user_id>")
 def get_user_name(user_id):
-    user_name = get_user(user_id)
+    user_name = get_user(USERNAME, PASSWORD, user_id)
     if user_name == None:
         return "<H1 id='error'>no such user: " + user_id + "</H1>"
     else:

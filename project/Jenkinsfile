@@ -3,6 +3,9 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '5'))
     }
+    environment {
+        SERVICE_CREDS = credentials('freedb')
+    }
 
     stages {
         stage('checkout') {
@@ -17,9 +20,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/rest_app.py'
+                        bat 'start /min python project/rest_app.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     } else {
-                        sh 'nohup python project/rest_app.py &'
+                        sh 'nohup python project/rest_app.py & $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }
@@ -28,9 +31,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/web_app.py'
+                        bat 'start /min python project/web_app.py $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     } else {
-                        sh 'nohup python project/web_app.py &'
+                        sh 'nohup python project/web_app.py & $SERVICE_CREDS_USR $SERVICE_CREDS_PSW'
                     }
                 }
             }

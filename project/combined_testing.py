@@ -4,6 +4,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 from db_connector import get_user, get_config, get_all_ids
+from project.rest_app import USERNAME
+from project.web_app import PASSWORD
 
 """
 Combined Testing - for Web interface, REST API and Database testing
@@ -18,12 +20,12 @@ Any failure will throw an exception using the following code: raise Exception("t
 """
 
 # User data variables
-config = get_config()
+config = get_config(USERNAME, PASSWORD)
 user_id = 1
 user_name = config[2]
 
 # check validation of user_id to insert
-ids = get_all_ids()
+ids = get_all_ids(USERNAME, PASSWORD)
 while True:
     if user_id not in ids:
         break
@@ -40,7 +42,7 @@ try:
     if not get_res.ok or get_res.json()['user_name'] != user_name:
         raise Exception("test failed")
     # Get user data from DB(using pymysql)
-    if get_user(user_id) != user_name:
+    if get_user(USERNAME, PASSWORD, user_id) != user_name:
         raise Exception("test failed")
 except Exception:
     raise Exception("test failed")

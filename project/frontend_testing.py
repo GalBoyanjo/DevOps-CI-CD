@@ -4,6 +4,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 from db_connector import get_config
+from project.web_app import USERNAME, PASSWORD
+
 """
 Frontend testing using selenium
 1. Start a Selenium Webdriver session.
@@ -12,7 +14,7 @@ Frontend testing using selenium
 4. Print user name (using locator)
 """
 # Get browser type from DB
-config = get_config()
+config = get_config(USERNAME, PASSWORD)
 browser_type = config[1]
 if browser_type == 'Chrome':
     driver = webdriver.Chrome(service=Service("C:/Users/GalBoyanjo/PycharmProjects/devOpsExperts/.binary/chromedriver"))

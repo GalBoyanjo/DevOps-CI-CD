@@ -1,18 +1,20 @@
 import requests
 
 from db_connector import get_user, get_config, get_all_ids
+from project.rest_app import USERNAME, PASSWORD
+
 """
 Backend testing
 1. Post a new user data to the REST API using POST method.
 2. Submit a GET request to make sure status code is 200 and data equals to the posted data.
 3. Check posted data was stored inside DB (users table)
 """
-config = get_config()
+config = get_config(USERNAME, PASSWORD)
 user_id = 1
 user_name = config[2]
 
 # check validation of user_id to insert
-ids = get_all_ids()
+ids = get_all_ids(USERNAME, PASSWORD)
 while True:
     if user_id not in ids:
         break
@@ -27,7 +29,7 @@ try:
     if not get_res.ok or get_res.json()['user_name'] != user_name:
         raise Exception("test failed")
     # Get user data from DB(using pymysql)
-    if get_user(user_id) != user_name:
+    if get_user(USERNAME, PASSWORD, user_id) != user_name:
         raise Exception("test failed")
 except Exception:
     raise Exception("test failed")
