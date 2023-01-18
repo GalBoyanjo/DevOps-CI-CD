@@ -2,7 +2,7 @@ import os
 import signal
 import sys
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 from db_connector import add_user, get_user, update_user, delete_user
 
@@ -57,6 +57,11 @@ def user(user_id):
 def stop_server():
     os.kill(os.getpid(), signal.CTRL_C_EVENT)
     return 'Server stopped'
+
+
+@app.errorhandler(404)
+def resource_not_found(e):
+    return jsonify(error=str(e)), 404
 
 
 app.run(host='127.0.0.1', debug=True, port=5000)

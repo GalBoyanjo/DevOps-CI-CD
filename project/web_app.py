@@ -28,4 +28,9 @@ def stop_server():
     return 'Server stopped'
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return "<H1> 404 </H1><p>Oops!</p>", 404
+
+
 app.run(host='127.0.0.1', debug=True, port=5001)

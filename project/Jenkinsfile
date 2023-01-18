@@ -10,7 +10,7 @@ pipeline {
         stage('checkout') {
             steps {
                 script {
-                    properties([pipelineTriggers([pollSCM('* * * * *')])])
+                    properties([pipelineTriggers([pollSCM('*/30 * * * *')])])
                 }
                 git 'https://github.com/GalBoyanjo/DevOpsExperts.git'
             }
