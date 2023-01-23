@@ -4,24 +4,26 @@ pipeline {
         registryCredential = 'docker_hub'
         dockerImage = ''
      }
-     stage('build and push image') {
-        steps {
-            script {
-                dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                docker.withRegistry('', registryCredential) {
-                    dockerImage.push()
+     stages{
+         stage('build and push image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+            post {
+                always {
+                    bat "docker rmi $registry:$BUILD_NUMBER"
                 }
             }
         }
-        post {
-            always {
-                bat "docker rmi $registry:$BUILD_NUMBER"
+        stage('set version') {
+            steps {
+                bat "echo IMAGE_TAG=${BUILD_NUMBER} > .env"
             }
-        }
-    }
-    stage('set version') {
-        steps {
-            bat "echo IMAGE_TAG=${BUILD_NUMBER} > .env"
         }
     }
 }
