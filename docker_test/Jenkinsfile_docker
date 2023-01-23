@@ -1,11 +1,12 @@
 pipeline {
-     environment {
+    agent any
+    environment {
         registry = "galbo22/my-repo"
         registryCredential = 'docker_hub'
         dockerImage = ''
-     }
-     stages{
-         stage('build and push image') {
+    }
+    stages{
+        stage('build and push image') {
             steps {
                 script {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
