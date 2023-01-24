@@ -6,11 +6,6 @@ pipeline {
         dockerImage = '' // will be overridden later
     }
     stages{
-        stage('checkout') {
-            steps {
-                git 'https://github.com/GalBoyanjo/DevOpsExperts.git'
-            }
-        }
         stage('build and push image') {
             steps {
                 script {
