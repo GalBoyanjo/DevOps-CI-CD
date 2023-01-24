@@ -9,7 +9,7 @@ pipeline {
         stage('build and push image') {
             agent {
                 dockerfile {
-                    args -w /docker_test //This makes sure that all our pipeline stage commands are executed inside our repo directory.
+                    args '-w /docker_test' //This makes sure that all our pipeline stage commands are executed inside our repo directory.
                 }
             }
             steps {
