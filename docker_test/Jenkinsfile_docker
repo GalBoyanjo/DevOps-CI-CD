@@ -2,4 +2,7 @@ pipeline {
     agent {
         dockerfile { dir 'docker_test' }
     }
+    stages{
+        stage{}
+        }
 }
