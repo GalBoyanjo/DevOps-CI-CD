@@ -1,8 +1,19 @@
 pipeline {
     agent {
-        dockerfile { dir 'docker_test' }
+        dockerfile { dir 'C:\Users\GalBoyanjo\.jenkins\workspace\DevOps Docker Test Pipeline\docker_test' }
+    }
+    environment {
+        registry = "galbo22/my-repo"  // The name of your user and repository (which can be created manually)
+        registryCredential = 'docker_hub' // The credentials used to your repo
+        dockerImage = '' // will be overridden later
     }
     stages{
-        stage{}
+        stage('build and push image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" // give a name and version to image
+                }
+            }
         }
+    }
 }
