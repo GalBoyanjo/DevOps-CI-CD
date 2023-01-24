@@ -2,18 +2,4 @@ pipeline {
     agent {
         dockerfile { dir 'docker_test' }
     }
-    environment {
-        registry = "galbo22/my-repo"  // The name of your user and repository (which can be created manually)
-        registryCredential = 'docker_hub' // The credentials used to your repo
-        dockerImage = '' // will be overridden later
-    }
-    stages{
-        stage('build and push image') {
-            steps {
-                script {
-                    bat 'docker build -t gal_test_jenk'
-                }
-            }
-        }
-    }
 }
