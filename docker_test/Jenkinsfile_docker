@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        dockerfile { dir 'C:\Users\GalBoyanjo\.jenkins\workspace\DevOps Docker Test Pipeline\docker_test' }
+        dockerfile { dir 'C:/Users/GalBoyanjo/.jenkins/workspace/DevOps Docker Test Pipeline/docker_test' }
     }
     environment {
         registry = "galbo22/my-repo"  // The name of your user and repository (which can be created manually)
