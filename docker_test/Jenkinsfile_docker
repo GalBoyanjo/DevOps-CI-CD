@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile {
+            dir 'docker_test'
+        }
+    }
     environment {
         registry = "galbo22/my-repo"  // The name of your user and repository (which can be created manually)
         registryCredential = 'docker_hub' // The credentials used to your repo
@@ -7,11 +11,6 @@ pipeline {
     }
     stages{
         stage('build and push image') {
-            agent {
-                dockerfile {
-                    dir 'docker_test'
-                }
-            }
             steps {
                 script {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER" // give a name and version to image
