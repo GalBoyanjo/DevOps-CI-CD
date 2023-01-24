@@ -4,7 +4,7 @@ pipeline {
     registryCredential = 'docker_hub' // The credentials used to your repo
     dockerImage = '' // will be overridden later
   }
-  agent any
+  agent { dockerfile true }
     stages{
         stage('build and push image') {
             steps {
