@@ -1,3 +1,4 @@
 flask
 pypika
+pymysql
 requests
