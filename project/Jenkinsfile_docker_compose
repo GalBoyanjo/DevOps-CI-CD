@@ -82,9 +82,9 @@ pipeline {
             steps{
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'docker-compose -f project/docker-compose.yml up -d'
+                        bat 'docker-compose -f project/docker-compose.yml up'
                     } else {
-                        sh 'docker-compose -f project/docker-compose.yml up -d'
+                        sh 'docker-compose -f project/docker-compose.yml up'
                     }
                 }
             }
