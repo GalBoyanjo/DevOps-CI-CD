@@ -4,7 +4,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '5'))
     }
     environment {
-        SERVICE_CREDS = credentials('freedb') //DB connection credentials
+        SERVICE_CREDS = credentials('LocalMySQL') //DB connection credentials
         registry = "galbo22/my-proj"  // The name of your user and repository (which can be created manually)
         registryCredential = 'docker_hub' // The credentials used to your repo
         dockerImage = '' // will be overridden later
