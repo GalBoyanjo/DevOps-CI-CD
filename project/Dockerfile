@@ -3,4 +3,5 @@ COPY . /code
 WORKDIR /code/project
 RUN pip install -r requirements.txt
 RUN chmod 644 rest_app.py
+EXPOSE  5000
 CMD ["python", "rest_app.py"]

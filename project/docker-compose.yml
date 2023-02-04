@@ -1,6 +1,6 @@
 version: '3'
 services:
   rest_app:
-    build: .
+    image: "galbo22/my-proj:${IMAGE_TAG}"
     ports:
       - "1234:5000"
