@@ -6,8 +6,10 @@ from flask import Flask, request, jsonify
 
 from db_connector import add_user, get_user, update_user, delete_user
 
-USERNAME = sys.argv[1]
-PASSWORD = sys.argv[2]
+# USERNAME = sys.argv[1]
+# PASSWORD = sys.argv[2]
+USERNAME = 'root'
+PASSWORD = 'password'
 
 app = Flask(__name__)
 
