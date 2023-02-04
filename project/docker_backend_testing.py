@@ -27,13 +27,13 @@ while True:
 
 try:
     # Post user data to the REST API
-    post_res = requests.post('http://127.0.0.1:5000/users/' + str(user_id), json={"user_name": user_name})
+    post_res = requests.post('http://127.0.0.1:1234/users/' + str(user_id), json={"user_name": user_name})
     # Get user data from REST API and verify response status and match to the post data
-    get_res = requests.get('http://127.0.0.1:5000/users/' + str(user_id))
+    get_res = requests.get('http://127.0.0.1:1234/users/' + str(user_id))
     if not get_res.ok or get_res.json()['user_name'] != user_name:
         raise Exception("test failed")
     # Get user data from DB(using pymysql)
     if get_user(USERNAME, PASSWORD, user_id) != user_name:
         raise Exception("test failed")
 except Exception as exception:
-    raise Exception("test failed",exception)
+    raise Exception("test failed")
