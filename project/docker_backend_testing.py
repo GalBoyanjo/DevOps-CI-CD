@@ -35,5 +35,5 @@ try:
     # Get user data from DB(using pymysql)
     if get_user(USERNAME, PASSWORD, user_id) != user_name:
         raise Exception("test failed")
-except Exception:
-    raise Exception("test failed")
+except Exception as exception:
+    raise Exception("test failed",exception)
