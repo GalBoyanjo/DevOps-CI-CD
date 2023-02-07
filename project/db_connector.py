@@ -10,7 +10,7 @@ def get_connection(db_user, db_pass):
     Establishing a connection to DB
     :return: connection variable
     """
-    conn = pymysql.connect(host='0.0.0.0', port=3306, user=db_user, passwd=db_pass,
+    conn = pymysql.connect(host='127.0.0.1', port=3306, user=db_user, passwd=db_pass,
                            db='db')
     return conn
 
