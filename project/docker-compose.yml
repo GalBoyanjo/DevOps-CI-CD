@@ -2,6 +2,10 @@ version: '3'
 services:
   rest_app:
     image: "galbo22/my-proj:${IMAGE_TAG}"
+    depends_on:
+      - db
+    links:
+      - db
     ports:
       - "1234:5000"
   db:
