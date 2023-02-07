@@ -6,4 +6,4 @@ WORKDIR /code/project
 RUN pip install -r requirements.txt
 RUN chmod 644 rest_app.py
 EXPOSE  5000
-CMD ["sh", "python rest_app.py $DB_USR $DB_PASS"]
+CMD ["sh", "-c", "python rest_app.py $DB_USR $DB_PASS"]
