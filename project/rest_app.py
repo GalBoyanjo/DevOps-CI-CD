@@ -6,10 +6,8 @@ from flask import Flask, request, jsonify
 
 from db_connector import add_user, get_user, update_user, delete_user
 
-# USERNAME = sys.argv[1]
-# PASSWORD = sys.argv[2]
-USERNAME = 'root'
-PASSWORD = 'password'
+USERNAME = sys.argv[1]
+PASSWORD = sys.argv[2]
 
 app = Flask(__name__)
 
@@ -66,4 +64,4 @@ def resource_not_found(e):
     return jsonify(error=str(e)), 404
 
 
-app.run(host='127.0.0.1', debug=True, port=5000)
+app.run(host='0.0.0.0', debug=True, port=5000)
