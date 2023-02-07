@@ -4,7 +4,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '5'))
     }
     environment {
-                SERVICE_CREDS = credentials('freedb')
+                SERVICE_CREDS = credentials('LocalMySQL') //DB connection credentials
     }
     stages {
         stage('checkout') {
