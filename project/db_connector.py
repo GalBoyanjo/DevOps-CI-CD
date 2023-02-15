@@ -18,13 +18,14 @@ def get_connection(db_user, db_pass, host):
 def add_user(db_user, db_pass, host, user_id, user_name):
     """
     Insert user to DB
+    :param host: DB host
     :param db_user: DB username credential
     :param db_pass: DB password credential
     :param user_id: ID of a user to insert
     :param user_name: UserName of a user to insert
     """
     # Establishing a connection to DB
-    conn = get_connection(db_user, db_pass,host)
+    conn = get_connection(db_user, db_pass, host)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -49,7 +50,7 @@ def get_user(db_user, db_pass, host, user_id):
     :return: UserName
     """
     # Establishing a connection to DB
-    conn = get_connection(db_user, db_pass)
+    conn = get_connection(db_user, db_pass, host)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -71,13 +72,14 @@ def get_user(db_user, db_pass, host, user_id):
 def update_user(db_user, db_pass, host, user_id, user_name):
     """
     Update UserName on DB
+    :param host: DB host
     :param db_user: DB username credential
     :param db_pass: DB password credential
     :param user_id: Id of the user that will updated
     :param user_name: UserName Data to update
     """
     # Establishing a connection to DB
-    conn = get_connection(db_user, db_pass)
+    conn = get_connection(db_user, db_pass, host)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -93,12 +95,13 @@ def update_user(db_user, db_pass, host, user_id, user_name):
 def delete_user(db_user, db_pass, host, user_id):
     """
     Delete user from DB
+    :param host:  DB Host
     :param db_user: DB username credential
     :param db_pass: DB password credential
     :param user_id: Id of a user that will be deleted
     """
     # Establishing a connection to DB
-    conn = get_connection(db_user, db_pass)
+    conn = get_connection(db_user, db_pass, host)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -111,7 +114,7 @@ def delete_user(db_user, db_pass, host, user_id):
     conn.close()
 
 
-def get_config(db_user, db_pass, host,):
+def get_config(db_user, db_pass, host):
     """
     Configuration Data saved on DB
     1. Gateway URL
@@ -123,7 +126,7 @@ def get_config(db_user, db_pass, host,):
     get_config[2] - UserName to be insert
     """
     # Establishing a connection to DB
-    conn = get_connection(db_user, db_pass)
+    conn = get_connection(db_user, db_pass, host)
     conn.autocommit(True)
 
     # Getting a cursor from Database
@@ -138,13 +141,13 @@ def get_config(db_user, db_pass, host,):
     return config_data
 
 
-def get_all_ids(db_user, db_pass, host,):
+def get_all_ids(db_user, db_pass, host):
     """
     Get all Users Id's from DB
     :return: List of all id's from DB
     """
     # Establishing a connection to DB
-    conn = get_connection(db_user, db_pass)
+    conn = get_connection(db_user, db_pass, host)
     conn.autocommit(True)
 
     # Getting a cursor from Database
