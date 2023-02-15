@@ -40,6 +40,7 @@ def add_user(db_user, db_pass, user_id, user_name):
 
 
 def get_user(db_user, db_pass, user_id):
+# def get_user(user_id):
     """
     Get UserName from DB
     :param db_user: DB username credential
@@ -64,6 +65,7 @@ def get_user(db_user, db_pass, user_id):
         return user_name
     else:
         return user_name[0]
+    # return Query.from_(users_table).select(users_table.user_name).where(users_table.user_id == user_id)
 
 
 def update_user(db_user, db_pass, user_id, user_name):

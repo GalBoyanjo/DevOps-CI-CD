@@ -2,6 +2,7 @@ import os
 import signal
 import sys
 
+import pymysql
 from flask import Flask, request, jsonify
 
 from db_connector import add_user, get_user, update_user, delete_user
@@ -11,6 +12,21 @@ PASSWORD = sys.argv[2]
 
 app = Flask(__name__)
 
+def db_connect(qurey):
+    conn = pymysql.connect(host='127.0.0.1', port=3306, user=USERNAME, passwd=PASSWORD,
+                           db='db')
+    conn.autocommit(True)
+
+    # Getting a cursor from Database
+    cursor = conn.cursor()
+
+    # Get user name data from table
+    query = qurey
+    cursor.execute(query.get_sql())
+    user_name = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return user_name
 
 # supported methods
 @app.route('/users/<user_id>', methods=['GET', 'POST', 'DELETE', 'PUT'])
@@ -28,8 +44,11 @@ def user(user_id):
 
     elif request.method == 'GET':
         user_name = get_user(USERNAME, PASSWORD, user_id)
+        # query = get_user(user_id)
+        # user_name = db_connect(query)
         if user_name != None:
             return {'status id': 'ok', 'user_name': user_name}, 200  # status code
+            # return {'status id': 'ok', 'user_name': user_name[0]}, 200  # status code
         else:
             return {'status id': 'error', 'reason': 'no such id'}, 500  # status code
 
