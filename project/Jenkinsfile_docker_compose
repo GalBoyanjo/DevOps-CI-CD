@@ -5,6 +5,8 @@ pipeline {
     }
     environment {
         SERVICE_CREDS = credentials('LocalMySQL') //DB connection credentials
+        serviceHost = '127.0.0.1'
+        serviceDockerHost = 'db'
         registry = "galbo22/my-proj"  // The name of your user and repository (which can be created manually)
         registryCredential = 'docker_hub' // The credentials used to your repo
         dockerImage = '' // will be overridden later
@@ -22,9 +24,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/rest_app.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        bat 'start /min python project/rest_app.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     } else {
-                        sh 'nohup python project/rest_app.py & %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        sh 'nohup python project/rest_app.py & %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     }
                 }
             }
@@ -33,9 +35,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        bat 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     } else {
-                        sh 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        sh 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     }
                 }
             }
@@ -54,7 +56,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build(registry + ":$BUILD_NUMBER", "-f ./project/Dockerfile --build-arg DB_USR=%SERVICE_CREDS_USR% --build-arg DB_PASS=%SERVICE_CREDS_PSW% .") // give a name and version to image
+                    dockerImage = docker.build(registry + ":$BUILD_NUMBER", "-f ./project/Dockerfile --build-arg DB_USR=%SERVICE_CREDS_USR% --build-arg DB_PASS=%SERVICE_CREDS_PSW% --build-arg DB_HOST=%serviceDockerHost% .") // give a name and version to image
                 }
             }
         }
@@ -93,9 +95,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        bat 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceDockerHost%'
                     } else {
-                        sh 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        sh 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceDockerHost%'
                     }
                 }
             }

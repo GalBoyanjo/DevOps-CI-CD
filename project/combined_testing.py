@@ -21,13 +21,15 @@ Any failure will throw an exception using the following code: raise Exception("t
 
 USERNAME = sys.argv[1]
 PASSWORD = sys.argv[2]
+HOST = sys.argv[3]
+
 # User data variables
-config = get_config(USERNAME, PASSWORD)
+config = get_config(USERNAME, PASSWORD, HOST)
 user_id = 1
 user_name = config[2]
 
 # check validation of user_id to insert
-ids = get_all_ids(USERNAME, PASSWORD)
+ids = get_all_ids(USERNAME, PASSWORD, HOST)
 while True:
     if user_id not in ids:
         break
@@ -44,7 +46,7 @@ try:
     if not get_res.ok or get_res.json()['user_name'] != user_name:
         raise Exception("test failed")
     # Get user data from DB(using pymysql)
-    if get_user(USERNAME, PASSWORD, user_id) != user_name:
+    if get_user(USERNAME, PASSWORD, HOST, user_id) != user_name:
         raise Exception("test failed")
 except Exception:
     raise Exception("test failed")

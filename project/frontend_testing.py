@@ -16,9 +16,10 @@ Frontend testing using selenium
 """
 USERNAME = sys.argv[1]
 PASSWORD = sys.argv[2]
+HOST = sys.argv[2]
 
 # Get browser type from DB
-config = get_config(USERNAME, PASSWORD)
+config = get_config(USERNAME, PASSWORD, HOST)
 browser_type = config[1]
 if browser_type == 'Chrome':
     driver = webdriver.Chrome(service=Service("C:/Users/GalBoyanjo/PycharmProjects/devOpsExperts/.binary/chromedriver"))
