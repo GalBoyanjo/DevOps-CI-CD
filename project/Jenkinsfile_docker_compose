@@ -95,9 +95,9 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceDockerHost%'
+                        bat 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     } else {
-                        sh 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceDockerHost%'
+                        sh 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     }
                 }
             }
