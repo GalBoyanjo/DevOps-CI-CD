@@ -5,12 +5,12 @@ config_table = Table('config')
 users_table = Table('users')
 
 
-def get_connection(db_user, db_pass,host):
+def get_connection(db_user, db_pass, host):
     """
     Establishing a connection to DB
     :return: connection variable
     """
-    conn = pymysql.connect(host='127.0.0.1', port=3306, user=db_user, passwd=db_pass,
+    conn = pymysql.connect(host=host, port=3306, user=db_user, passwd=db_pass,
                            db='db')
     return conn
 
