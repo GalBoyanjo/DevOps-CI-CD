@@ -36,4 +36,4 @@ try:
     if get_user(USERNAME, PASSWORD, user_id) != user_name:
         raise Exception("test failed")
 except Exception as exception:
-    raise Exception("test failed")
+    raise Exception("test failed", exception)
