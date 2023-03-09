@@ -20,6 +20,17 @@ pipeline {
                 git 'https://github.com/GalBoyanjo/DevOpsExperts.git'
             }
         }
+        stage('Run Docker Compose - DB'){
+            steps{
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'docker-compose -f project/docker-compose-db.yml up -d'
+                    } else {
+                        sh 'docker-compose -f project/docker-compose-db.yml up -d'
+                    }
+                }
+            }
+        }
         stage('Run rest_app') {
             steps {
                 script {
