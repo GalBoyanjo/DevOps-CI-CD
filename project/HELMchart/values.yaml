@@ -1,0 +1,8 @@
+deployment:
+  replicaCount: 5
+image:
+  repository: galbo22/my-proj:41
+service:
+  type: LoadBalancer
+container:
+  port: 5000

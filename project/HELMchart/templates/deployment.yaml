@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ci-cd-project-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ci-cd-project-deployment
+  replicas: {{ .Values.deployment.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: ci-cd-project-deployment
+    spec:
+      containers:
+      - name: ci-cd-project-deployment
+        image: {{ .Values.deployment.dockerImage }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.container.port }}
