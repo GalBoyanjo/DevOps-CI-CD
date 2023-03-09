@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ci-cd-project-deployment
-        image: {{ .Values.deployment.dockerImage }}
+        image: {{ .Values.image.repository }}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.container.port }}
