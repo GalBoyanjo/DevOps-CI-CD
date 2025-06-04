@@ -4,10 +4,15 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '5'))
     }
     environment {
-                SERVICE_CREDS = credentials('LocalMySQL') //DB connection credentials
+        SERVICE_CREDS = credentials('LocalMySQL') //DB connection credentials
+        serviceHost = '127.0.0.1'
+        serviceDockerHost = 'db'
+        registry = "galbo22/my-proj"  // The name of your user and repository (which can be created manually)
+        registryCredential = 'docker_hub' // The credentials used to your repo
+        dockerImage = '' // will be overridden later
     }
     stages {
-        stage('checkout') {
+        stage('Checkout') {
             steps {
                 script {
                     properties([pipelineTriggers([pollSCM('*/30 * * * *')])])
@@ -15,24 +20,24 @@ pipeline {
                 git 'https://github.com/GalBoyanjo/DevOpsExperts.git'
             }
         }
-        stage('Run rest_app') {
-            steps {
+        stage('Run Docker Compose - DB'){
+            steps{
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/rest_app.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        bat 'docker-compose -f project/docker-compose-db.yml up -d'
                     } else {
-                        sh 'nohup python project/rest_app.py & %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        sh 'docker-compose -f project/docker-compose-db.yml up -d'
                     }
                 }
             }
         }
-        stage('Run web_app') {
+        stage('Run rest_app') {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'start /min python project/web_app.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        bat 'start /min python project/rest_app.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     } else {
-                        sh 'nohup python project/web_app.py & %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        sh 'nohup python project/rest_app.py & %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     }
                 }
             }
@@ -41,32 +46,15 @@ pipeline {
             steps {
                 script {
                     if (checkOs() == 'Windows') {
-                        bat 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        bat 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     } else {
-                        sh 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
+                        sh 'python project/backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
                     }
                 }
             }
-        }
-        stage('Run frontend_testing') {
-            steps {
-                script {
-                    if (checkOs() == 'Windows') {
-                        bat 'python project/frontend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
-                    } else {
-                        sh 'python project/frontend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
-                    }
-                }
-            }
-        }
-        stage('Run combined_testing') {
-            steps {
-                script {
-                    if (checkOs() == 'Windows') {
-                        bat 'python project/combined_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
-                    } else {
-                        sh 'python project/combined_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW%'
-                    }
+            post{
+                always {
+                    bat 'docker-compose -f project/docker-compose-db.yml down' // delete the local image at the end
                 }
             }
         }
@@ -77,6 +65,95 @@ pipeline {
                         bat 'python project/clean_environment.py'
                     } else {
                         sh 'python project/clean_environment.py'
+                    }
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build(registry + ":$BUILD_NUMBER", "-f ./project/Dockerfile --build-arg DB_USR=%SERVICE_CREDS_USR% --build-arg DB_PASS=%SERVICE_CREDS_PSW% --build-arg DB_HOST=%serviceDockerHost% .") // give a name and version to image
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push() // push image to hub
+                    }
+                }
+            }
+        }
+        stage('Set Compose Image Version'){
+            steps{
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'echo IMAGE_TAG=${BUILD_NUMBER} > project/.env'
+                    } else {
+                        sh 'echo IMAGE_TAG=${BUILD_NUMBER} > project/.env'
+                    }
+                }
+            }
+        }
+        stage('Run Docker Compose'){
+            steps{
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'docker-compose -f project/docker-compose.yml up -d'
+                    } else {
+                        sh 'docker-compose -f project/docker-compose.yml up -d'
+                    }
+                }
+            }
+        }
+        stage('Run dockerized backend_testing') {
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
+                    } else {
+                        sh 'python project/docker_backend_testing.py %SERVICE_CREDS_USR% %SERVICE_CREDS_PSW% %serviceHost%'
+                    }
+                }
+            }
+            post{
+                always {
+                    bat 'docker-compose -f project/docker-compose.yml down' // delete the local image at the end
+                    bat 'docker rmi $registry:${BUILD_NUMBER}' // delete the local image at the end
+                }
+            }
+        }
+        stage('Run Docker Compose - DB for K8S'){
+            steps{
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'docker-compose -f project/docker-compose-db.yml up -d'
+                    } else {
+                        sh 'docker-compose -f project/docker-compose-db.yml up -d'
+                    }
+                }
+            }
+        }
+        stage('Deploy HELM chart'){
+            steps{
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'helm upgrade --install prjk8s project/HELMchart –-set image.version=$registry:${BUILD_NUMBER}'
+
+                    } else {
+                        sh 'helm upgrade --install prjk8s project/HELMchart –-set image.version=$registry:${BUILD_NUMBER}'
+                    }
+                }
+            }
+        }
+        stage('Get k8s url'){
+            steps{
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'start /min minikube service ci-cd-project-service --url > k8s_url.txt'
+                    } else {
+                        sh 'nohup python minikube service ci-cd-project-service --url > k8s_url.txt'
                     }
                 }
             }
