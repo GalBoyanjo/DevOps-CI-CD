@@ -2,6 +2,7 @@ deployment:
   replicaCount: 5
 image:
   repository: galbo22/my-proj:41
+  dbHostArgs: ['DB_HOST', '127.0.0.1']
 service:
   type: LoadBalancer
 container:

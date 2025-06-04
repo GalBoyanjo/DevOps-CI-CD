@@ -16,5 +16,8 @@ spec:
       - name: ci-cd-project-deployment
         image: {{ .Values.image.repository }}
         imagePullPolicy: Always
+        args:
+          - DB_HOST
+          - 127.0.0.1
         ports:
         - containerPort: {{ .Values.container.port }}
